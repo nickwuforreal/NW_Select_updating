@@ -29,7 +29,6 @@
 
     if(prodcon!=null){
     String[] conarr = prodcon.split("/");
-    //System.out.print(conarr[1]);
     %>
 	<div class="container-fluid">
 	    <div class="row justify-content-between align-items-center">
@@ -83,7 +82,6 @@
 	
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
-	<!-- <script src="js/plugins.js"></script> -->
 	<script src="./js/active.js"></script>
 </body>
 

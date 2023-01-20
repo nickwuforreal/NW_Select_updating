@@ -48,20 +48,20 @@
 			String datapic=null;
 			
 			try {
-			com.ted.SQLBean db = new com.ted.SQLBean();
-			Connection conn = null;
-			PreparedStatement stmt = null;
-			ResultSet rs = null;
-			conn = db.getconn();
-			
-			String sql= "SELECT * FROM nw_select.commodity INNER JOIN nw_select.comm_pic ON commodity.comm_no=comm_pic.comm_no WHERE sort=?;";
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1,"褲子");
-			rs = stmt.executeQuery();
-			while(rs.next()){
-				dataprice = rs.getString("price");
-				dataname = rs.getString("comm_name");
-				datapic = rs.getString("pic_name");
+				com.ted.SQLBean db = new com.ted.SQLBean();
+				Connection conn = null;
+				PreparedStatement stmt = null;
+				ResultSet rs = null;
+				conn = db.getconn();
+				
+				String sql= "SELECT * FROM nw_select.commodity INNER JOIN nw_select.comm_pic ON commodity.comm_no=comm_pic.comm_no WHERE sort=?;";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1,"褲子");
+				rs = stmt.executeQuery();
+				while(rs.next()){
+					dataprice = rs.getString("price");
+					dataname = rs.getString("comm_name");
+					datapic = rs.getString("pic_name");
 			%>	
 			        
 			<div class="col-xs-6 col-sm-3 pd-item">
@@ -83,15 +83,11 @@
 			        
 		<%
 		}
-		
 		rs.close();
 		stmt.close();
-		
 		}
 		catch (SQLException e) {
-		
-		
-		e.printStackTrace();
+			e.printStackTrace();
 		} 
 		%>
 		</div>
@@ -102,7 +98,6 @@
 	
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
-	<!-- <script src="js/plugins.js"></script> -->
 	<script src="./js/active.js"></script>
 </body>
 

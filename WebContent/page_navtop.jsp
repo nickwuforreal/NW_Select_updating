@@ -27,15 +27,11 @@
                 String password = null;
                 Cookie[] cookies = request.getCookies();
                 if(cookies!=null){
-                for (int i = 0; i < cookies.length; i++) {
-           
-           
-                    if ("username".equals(cookies[i].getName())) {
-           
-           
-                        username = cookies[i].getValue();
-                    } 
-                }
+	                for (int i = 0; i < cookies.length; i++) {
+	                    if ("username".equals(cookies[i].getName())) {
+	                        username = cookies[i].getValue();
+	                    } 
+	                }
                 }
                 if (username != null) {
                 %>
@@ -47,17 +43,14 @@
                     </li>
                 <%
                 }
-                else
-                {
+                else{
                 %>
                     <li class="nav-item">
                     <a class="nav-link" id="loginbtn" href="login.jsp" type="button"><span class="material-symbols-outlined">
                         login
                     </span>會員登入</a>
                     </li>
-                <%
-                }
-                %>
+                <%}%>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="JavaScript:;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="material-symbols-outlined">

@@ -58,7 +58,6 @@
 	    </form> 
 	    <%
 	    String username = null;
-	   // String password = null;
 	    Cookie[] cookies = request.getCookies();
 	    if(cookies!=null){
 	    for (int i = 0; i < cookies.length; i++) {
@@ -79,7 +78,6 @@
 	    
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
-	<!-- <script src="js/plugins.js"></script> -->
 	<script src="./js/active.js"></script>
 </body>
 

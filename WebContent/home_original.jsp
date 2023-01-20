@@ -38,17 +38,6 @@
                           <li><a class="dropdown-item" href="order_history.jsp">訂單查詢</a></li>
                           <li><a class="dropdown-item" href="member_info.jsp">會員資料</a></li>
                         </ul>
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="JavaScript:;" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="JavaScript:;">Action</a></li>
-                    <li><a class="dropdown-item" href="JavaScript:;">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="JavaScript:;">Something else here</a></li>
-                    </ul>
-                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="JavaScript:;"><span class="material-symbols-outlined">
                         shopping_cart_checkout

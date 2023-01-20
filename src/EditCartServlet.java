@@ -16,15 +16,10 @@ public class EditCartServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String quantity="";
 		String prodno="";
-		String cartno="";
-
-		cartno = String.valueOf(request.getParameter("cartno"));
 		prodno = String.valueOf(request.getParameter("prodno"));
 		quantity = String.valueOf(request.getParameter("prodquan"));
-
 		String[] commquan = quantity.split(",");
 		String[] commno = prodno.split(",");
-//		System.out.print(cartno+"***"+prodno+"***"+quantity+"***"+loginmail);
 	    response.setContentType("text/plain;charset=utf-8");
 	    
 	    com.ted.SQLBean db = new com.ted.SQLBean();
@@ -39,46 +34,40 @@ public class EditCartServlet extends HttpServlet {
 	    }
 		conn = db.getconn();
 		
-	    if(conn != null)
-	    {
+	    if(conn != null){
 	    	try {
 				stmt = conn.createStatement();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+			} 
+	    	catch (SQLException e) {
 				e.printStackTrace();
 			}		 
 		 }
 	    
 	    try {
 	    	for(int i=0;i<commno.length;i++) {
-	    	//	if(commquan[i]!="0")
 	    sql[i]="UPDATE cart_data SET qty = '"+commquan[i]+"' WHERE comm_no='"+commno[i]+"';";
 	    stmt.executeUpdate(sql[i]);
 	    	}
 	    }
-
 		catch(Exception e){
 			System.out.print(e);
 		}
 		
 		try {
 			stmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
 			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
-		}
-	    
+		}    
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
-	}
-	
+
+	}	
 }

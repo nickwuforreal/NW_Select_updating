@@ -15,98 +15,6 @@
 </head>
 
 <body>
-<script>
-function cleardelivery()
-{
-	document.getElementById("deliveryname").value = ""
-	document.getElementById("deliveryphone").value = ""
-	document.getElementById("deliveryemail").value = ""
-}
-
-function orderdone()
-{
-	if(window.ActiveXObject)
-    {
-        xmlHTTP=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    else if(window.XMLHttpRequest)
-    {
-        xmlHTTP=new XMLHttpRequest();
-    }
-	var payment = document.getElementById("payment").value;
-	var cartno=document.getElementById("cartno").innerText;
-	var name = document.getElementById("deliveryname").value;
-	if(name==''){
-		document.getElementById("message").innerHTML = "***請填入真實姓名***";
-		document.getElementById('deliveryname').focus();
-		return false;
-	}else{
-		var nameRegxp = /^[\u4e00-\u9fa5]+$|^[a-zA-Z\s]+$/;
-		if (nameRegxp.test(name) != true){
-			document.getElementById("message").innerHTML = "***真實姓名格式錯誤***";
-			document.getElementById('deliveryname').focus();
-			document.getElementById('deliveryname').select();
-			return false;
-		}
-	}
-	
-	var phone = document.getElementById("deliveryphone").value;
-	if(phone==''){
-		document.getElementById("message").innerHTML = "***請填入手機號碼***";
-		document.getElementById('deliveryphone').focus();
-		return false;
-	}else{
-		var phoneRegxp = /^09\d{8}$/;
-		if (phoneRegxp.test(phone) != true){
-			document.getElementById("message").innerHTML = "***手機號碼格式錯誤***";
-			document.getElementById('deliveryphone').focus();
-			document.getElementById('deliveryphone').select();
-			return false;
-		}
-	}
-	
-	var mail = document.getElementById("deliveryemail").value;
-	if(mail==''){
-		document.getElementById("message").innerHTML = "***請填入電子信箱***";
-		document.getElementById('deliveryemail').focus();
-		return false;
-	}else{
-		var mailRegxp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-		if (mailRegxp.test(mail) != true){
-			document.getElementById("message").innerHTML = "***電子信箱格式錯誤***";
-			document.getElementById('deliveryemail').focus();
-			document.getElementById('deliveryemail').select();
-			return false;
-		}
-	}
-	document.getElementById("message").innerHTML = ""
-	
-	if(mail!=0 && name!=0 && phone!=0)
-	{
-		console.log(mail+"/"+name+"/"+phone+"/"+payment+"/"+cartno)
-		xmlHTTP.open("GET","http://localhost:8080/NW_Select/setDelivery?useUnicode=true&characterEncoding=UTF-8&mail="+mail+"&name="+name+"&phone="+phone+"&payment="+payment+"&cartno="+cartno, true);
-	}
-	
-	xmlHTTP.onreadystatechange=function ()
-	{
-		if(xmlHTTP.readyState == 4)
-        {
-          if(xmlHTTP.status == 200)
-          {
-        	  document.getElementById("reg").innerHTML="<div class='spacer50'></div><h4 style='color:red'>結帳完成<br>5秒後自動前往<a href='order_history.jsp'>訂單查詢</a></h4>";
-        	  setTimeout("location.href='order_history.jsp'",4000);
-          }
-        }
-	}
-	 
-    xmlHTTP.send();
-}
-
-function goezship()
-{
-	document.forms["ezship"].submit();
-}
-</script>
 <%
      // === 接收電子地圖回傳值 ===
      String s_processID = request.getParameter("processID")==null?"":request.getParameter("processID");
@@ -142,30 +50,28 @@ function goezship()
                             <th>金額</th>
                         </tr>
                         <%
-                        String loginmail = null;
-	                    String memno = null;
-	                    String memname = null;
-	                    String phone = null;
-					    String prodname = null;
-					    String prodprice = null;
-					    String quantity = null;
+                        String loginmail = "";
+	                    String memno = "";
+	                    String memname = "";
+	                    String phone = "";
+					    String prodname = "";
+					    String prodprice = "";
+					    String quantity = "";
 					    int quan=0;
 					    int pri=0;
-					    String count=null;
+					    String count="";
 					    int tot=0;
-					    String total=null;
-					    String commno=null;
-					    String cartno=null;
+					    String total="";
+					    String commno="";
+					    String cartno="";
 					    Cookie[] cookies = request.getCookies();
 						for (Cookie c : cookies) {
 							  if (c.getName().equals("username")) {
 							    loginmail = c.getValue();
 							  }
 							}
-						//System.out.println("cookie:"+loginmail);
 						application.setAttribute("username",loginmail);
 						loginmail = String.valueOf(application.getAttribute("username"));
-						//System.out.println("application:"+loginmail);
 					    try {
 							com.ted.SQLBean db = new com.ted.SQLBean();
 							Connection conn = null;
@@ -182,7 +88,7 @@ function goezship()
 						    	phone = rs.getString("phone");
 						    	memno=String.format("%05d",rs.getInt("mem_no"));
 						    }
-						    //System.out.println(memno);
+
 							String sql1="select * from cart_data inner join ("+
 										"(SELECT * ,(SELECT mem_no FROM member WHERE email='"+loginmail+"') as mem_no FROM commodity WHERE commodity.comm_no in"+ 
 										"(SELECT comm_no FROM cart_data "+
@@ -238,7 +144,7 @@ function goezship()
                         </div>
                         <div class="spacer15"></div>
                         <input name="Submit2" type="button" value="選擇門市" onclick="goezship()">
-						<span><%out.print(s_stName); %></span>
+						<span id="deliverySales"><%out.print(s_stName); %></span>
                         <div class="spacer15"></div>
                     </div>
                 </div>
@@ -324,7 +230,6 @@ function goezship()
 	
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
-	<!-- <script src="js/plugins.js"></script> -->
 	<script src="./js/active.js"></script>
 </body>
 

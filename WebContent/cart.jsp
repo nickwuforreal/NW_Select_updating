@@ -14,110 +14,6 @@
 </head>
 
 <body>
-<script type="text/javascript">
-function refreshcart()
-{
-	const count=[];
-	var total=0;
-	const quan_elements=document.querySelectorAll(".prod-quan");
-	const price_elements=document.querySelectorAll(".price");
-	const count_elements=document.querySelectorAll(".count");
-	const products_price = [];
-	const products_quantity = [];
-	for (var i=0;i<price_elements.length;i++){
-		products_price.push(price_elements[i].innerText);
-		products_quantity.push(quan_elements[i].value);
-		count[i]=products_price[i]*products_quantity[i];
-		total+=count[i];
-		count_elements[i].innerText=count[i];
-	}
-	document.querySelector(".total").innerText=total;
-}
-
-function deleteprod(){
-// 	if(window.ActiveXObject)
-//     {
-//         xmlHTTP=new ActiveXObject("Microsoft.XMLHTTP");
-//     }
-//     else if(window.XMLHttpRequest)
-//     {
-//         xmlHTTP=new XMLHttpRequest();
-//     }
-	const trElement = document.querySelector('.prodtr');
-// 	const commno_element = document.querySelectorAll("#commno");
-// 	const commno=commno_element.innerText;
-// 	console.log(commno);
-// 	if(commno!=null)
-// 	{
-// 		xmlHTTP.open("GET","http://localhost:8080/NW_Select/deleteProd?useUnicode=true&characterEncoding=UTF-8&cartno="+cartno+"&prodno="+prodno+"&prodquan="+prodquan, true);
-// 	}
-// 	xmlHTTP.onreadystatechange=function ()
-// 	{
-// 		if(xmlHTTP.readyState == 4)
-//         {
-//           if(xmlHTTP.status == 200)
-//           {
-//         	  
-//           }
-//         }
-// 	}
-//     xmlHTTP.send();
-    
-	event.target.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode);
-	refreshcart()
-}
-
-function clearcart(){
-	const tbElements = document.querySelectorAll('.prodtr');
-	  for (const tbElement of tbElements) {
-	    tbElement.parentNode.removeChild(tbElement);
-	  }
-	  refreshcart()
-}
-
-function finishcart(){
-	if(window.ActiveXObject)
-    {
-        xmlHTTP=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    else if(window.XMLHttpRequest)
-    {
-        xmlHTTP=new XMLHttpRequest();
-    }
-	
-	const qty_elements=document.querySelectorAll("#quantity");
-	const commno_elements=document.querySelectorAll("#commno");
-	var cartno=document.getElementById("cartno").innerText;
-	const products_no = [];
-	const products_quantity = [];
-	//const products_detail = [];
-	for (var i=0;i<commno_elements.length;i++){
-		products_no.push(commno_elements[i].innerText);
-		products_quantity.push(qty_elements[i].value);
-		//products_detail[i]=products_no[i]+"/"+products_quantity[i]
-	}
-	var prodno = products_no.join(',')
-	var prodquan = products_quantity.join(',')
-	console.log(prodno+"/"+prodquan)
-	if(cartno!=null)
-	{
-		xmlHTTP.open("GET","http://localhost:8080/NW_Select/editCart?useUnicode=true&characterEncoding=UTF-8&cartno="+cartno+"&prodno="+prodno+"&prodquan="+prodquan, true);
-	}
-	
-	xmlHTTP.onreadystatechange=function ()
-	{
-		if(xmlHTTP.readyState == 4)
-        {
-          if(xmlHTTP.status == 200)
-          {
-        	  setTimeout("location.href='cart_order.jsp'",500);
-          }
-        }
-	}
-    xmlHTTP.send();
-}
-
-</script>
 	<!-- 導覽列 -->
 	<jsp:include page="/page_navtop.jsp" />
 	<!-- 頁籤 -->
@@ -137,60 +33,68 @@ function finishcart(){
                         <th>金額</th>
                     </tr>
                     <%
-                    String loginmail = null;
-                    String memno = null;
-				    String prodname = null;
-				    String prodprice = null;
-				    String quantity = null;
+                    String loginmail = "";
+                    String memno = "";
+				    String prodname = "";
+				    String prodprice = "";
+				    String quantity = "";
 				    int quan=0;
 				    int pri=0;
-				    String count=null;
+				    String count="";
 				    int tot=0;
-				    String total=null;
-				    String commno=null;
-				    String cartno=null;
+				    String total="";
+				    String commno="";
+				    String cartno="";
+				    boolean loggedIn=false;
 				    Cookie[] cookies = request.getCookies();
 					for (Cookie c : cookies) {
-						  if (c.getName().equals("username")) {
+						  if (c.getName().equals("username")){
 						    loginmail = c.getValue();
+						    loggedIn=true;
 						  }
-						}
-					//System.out.println(loginmail);
-				    try {
-						com.ted.SQLBean db = new com.ted.SQLBean();
-						Connection conn = null;
-						PreparedStatement stmt = null;
-						ResultSet rs = null;
-						conn = db.getconn();
-						
-						String sql="SELECT mem_no FROM member WHERE email=?;";
-						stmt = conn.prepareStatement(sql);
-						stmt.setString(1,loginmail);
-						rs = stmt.executeQuery();
-					    while(rs.next()) {
-					    	memno=String.format("%05d",rs.getInt("mem_no"));
-					    }
-					    //System.out.println(memno);
-						String sql1="select * from cart_data inner join ("+
-									"(SELECT * ,(SELECT mem_no FROM member WHERE email='"+loginmail+"') as mem_no FROM commodity WHERE commodity.comm_no in"+ 
-									"(SELECT comm_no FROM cart_data "+
-									"WHERE cart_no=(SELECT cart_no FROM cart "+
-									"WHERE mem_no='"+memno+"')) "+
-									")) as temp"+
-									" on temp.comm_no=cart_data.comm_no;";
-					    rs = stmt.executeQuery(sql1);
-					    while(rs.next()) {
-					    	cartno=String.format("%05d",rs.getInt("cart_no"));
-					    	commno=String.format("%05d",rs.getInt("comm_no"));
-					    	quan=rs.getInt("qty");
-					    	quantity=String.valueOf(quan);
-					    	prodname=rs.getString("comm_name");
-					    	pri=rs.getInt("price");
-					    	prodprice=String.valueOf(pri);
-					    	count=String.valueOf(quan*pri);
-					    	tot+=(quan*pri);
-					    	total=String.valueOf(tot);
-				    %>
+						} 
+					if(!loggedIn){
+							response.setHeader("Cache-Control","no-store");
+							response.setHeader("Pragma","no-cache");
+							response.setDateHeader ("Expires", 0);
+							response.sendRedirect("login.jsp");
+					}
+					else{
+					    try {
+							com.ted.SQLBean db = new com.ted.SQLBean();
+							Connection conn = null;
+							PreparedStatement stmt = null;
+							ResultSet rs = null;
+							conn = db.getconn();
+							
+							String sql="SELECT mem_no FROM member WHERE email=?;";
+							stmt = conn.prepareStatement(sql);
+							stmt.setString(1,loginmail);
+							rs = stmt.executeQuery();
+						    while(rs.next()) {
+						    	memno=String.format("%05d",rs.getInt("mem_no"));
+						    }
+	
+							String sql1="select * from cart_data inner join ("+
+										"(SELECT * ,(SELECT mem_no FROM member WHERE email='"+loginmail+"') as mem_no FROM commodity WHERE commodity.comm_no in"+ 
+										"(SELECT comm_no FROM cart_data "+
+										"WHERE cart_no=(SELECT cart_no FROM cart "+
+										"WHERE mem_no='"+memno+"')) "+
+										")) as temp"+
+										" on temp.comm_no=cart_data.comm_no;";
+						    rs = stmt.executeQuery(sql1);
+						    while(rs.next()) {
+						    	cartno=String.format("%05d",rs.getInt("cart_no"));
+						    	commno=String.format("%05d",rs.getInt("comm_no"));
+						    	quan=rs.getInt("qty");
+						    	quantity=String.valueOf(quan);
+						    	prodname=rs.getString("comm_name");
+						    	pri=rs.getInt("price");
+						    	prodprice=String.valueOf(pri);
+						    	count=String.valueOf(quan*pri);
+						    	tot+=(quan*pri);
+						    	total=String.valueOf(tot);
+					    %>
                     <tr class="prodtr">
                         <td><a href="#" onclick="deleteprod()">刪除</a></td>
                         <td id="commno"><%=commno%></td>
@@ -215,6 +119,9 @@ function finishcart(){
                         <td class="text-end" colspan="2">小計</td>
                         <td class="total" ><%=total %></td>
                     </tr>
+                    <%
+					}
+					%>
                 </table>
                 <div class="cart-btn mb-3">
                     <a class="btn btn-dark" role="button" href="product_top.jsp">繼續購物</a>
@@ -232,7 +139,6 @@ function finishcart(){
 	
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
-	<!-- <script src="js/plugins.js"></script> -->
 	<script src="./js/active.js"></script>
 </body>
 

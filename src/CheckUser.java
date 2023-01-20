@@ -22,16 +22,13 @@ public class CheckUser extends HttpServlet {
 		HttpSession session = request.getSession();
         Optional<Object> token = Optional.ofNullable(session.getAttribute("login"));
         response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-        if(token.isPresent()) 
-        {
+        if(token.isPresent()) {
         	String sessionid = request.getSession(false).getId();
         	response.sendRedirect("login.jsp");
         	Cookie userCookie = new Cookie("usersid",sessionid);
         	response.addCookie(userCookie);
         }
-        else 
-        {
+        else {
             response.sendRedirect("login.jsp");
         }
 	}
@@ -45,8 +42,6 @@ public class CheckUser extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
