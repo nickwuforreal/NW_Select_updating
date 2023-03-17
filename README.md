@@ -1,5 +1,5 @@
 # NW_Select
-這是我的職訓局成果發表作品**流行服飾購物網站**
+這是我的職訓局成果發表作品 - **流行服飾購物網站**
 ## 使用技術
 - Front End：HTML5、CSS3、JavaScript
 - Back End：Java、Servlet/JSP
